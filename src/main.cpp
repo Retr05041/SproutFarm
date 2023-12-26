@@ -1,20 +1,96 @@
 #include "raylib.h"
+#include "Player/Player.hpp"
+#include "World/CustomCamera.hpp"
 
-int main(int argc, char const *argv[]) {
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+const int SCREEN_WIDTH = 1000;
+const int SCREEN_HEIGHT = 480;
+bool isRunning = true;
+Color backgroundColor = {147, 211, 196, 255};
+Texture2D grassSprite;
+Player *player;
+CustomCamera *playerCamera;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+void drawScene() {
+    DrawTexture(grassSprite, 100, 50, WHITE);
+    player->draw();
+}
 
+/**
+ * @brief Input function
+ * 
+ * @details Handles all input for respective objects
+*/
+void input() {
+    player->input();
+}
+
+/**
+ * @brief Update function
+ * 
+ * @details Handles all updating
+*/
+void update() {
+    isRunning = !WindowShouldClose();
+    playerCamera->update(Vector2{player->getPlayerDestX()-(player->getPlayerDestWidth()/2), player->getPlayerDestY()-(player->getPlayerDestHeight()/2)});
+}
+
+/**
+ * @brief Render function
+ * 
+ * @details Handles all rendering for game
+*/
+void render() {
+    BeginDrawing();
+    ClearBackground(backgroundColor);    
+    playerCamera->begin();
+
+    drawScene();
+        
+    playerCamera->end();
+    EndDrawing();
+}
+
+/**
+ * @brief Init function
+ * 
+ * @details Initializes all variables and objects
+
+*/
+void init() {
+    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "SproutFarm");
+    SetExitKey(0);
     SetTargetFPS(60);
 
-    while (!WindowShouldClose()) {
-        BeginDrawing();
-        ClearBackground(RAYWHITE);
-        DrawText("Congrats! You created your first window!", 190, 200, 20, BLACK);
-        EndDrawing();
+    grassSprite = LoadTexture("res/Tilesets/Grass.png");
+    player = new Player({0, 0, 48, 48}, {200, 200, 100, 100}, 3.0, "res/Characters/Basic_Charakter_Spritesheet.png");
+    playerCamera = new CustomCamera(Vector2{SCREEN_WIDTH/2, SCREEN_HEIGHT/2}, Vector2{player->getPlayerDestX()-(player->getPlayerDestWidth()/2), player->getPlayerDestY()-(player->getPlayerDestHeight()/2)}, 0.0, 1.0);
+}
+
+/**
+ * @brief Quit function
+ * 
+ * @details Deallocates all memory and quits game
+*/
+void quit() {
+    UnloadTexture(grassSprite);
+    delete player;
+    CloseWindow();
+}
+
+/**
+ * @brief Main function
+ * 
+ * @details Main game loop
+*/
+int main(int argc, char const *argv[]) {
+    init();
+
+    while (isRunning) {
+        input();
+        update();
+        render();
     }
 
-    CloseWindow();
+    quit();
     return 0;
 }

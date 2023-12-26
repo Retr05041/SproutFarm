@@ -11,6 +11,8 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 set(SOURCES
     src/main.cpp
+    src/Player/Player.cpp
+    src/World/CustomCamera.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
