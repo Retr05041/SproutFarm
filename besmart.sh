@@ -1,7 +1,7 @@
 #!/bin/bash
 # Created by Parker Cranfield 24/12/2023
 
-PROJECT_NAME="RayLibTemplate"
+PROJECT_NAME="SproutFarm"
 
 while getopts 'sbrh' OPTION; do
   case "$OPTION" in

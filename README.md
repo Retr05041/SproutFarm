@@ -1,5 +1,7 @@
-# Raylib5Template
-Template for a Raylib 5 project
+# SproutFarm
+Farming game redon in C++ from [this](https://www.youtube.com/watch?v=OyLFPGRzSEs&list=PLVotA8ycjnCsy30WQCwVU5RrZkt4lLgY5&index=2) GO tutorial series.
+
+Using the *free* version of [this](https://cupnooble.itch.io/sprout-lands-asset-pack) asset pack.
 
 ## How to use
 1. Clone this repository
