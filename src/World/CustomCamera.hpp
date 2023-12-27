@@ -5,6 +5,7 @@
 
 #include "raylib.h"
 
+
 class CustomCamera {
     public:
         CustomCamera(Vector2 size, Vector2 location, float roation, float zoom = 1.0);

@@ -5,6 +5,7 @@
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 480;
 bool isRunning = true;
+int frameCounter = 0;
 Color backgroundColor = {147, 211, 196, 255};
 Texture2D grassSprite;
 Player *player;
@@ -31,7 +32,11 @@ void input() {
 */
 void update() {
     isRunning = !WindowShouldClose();
+    player->update(frameCounter);
+    frameCounter++;
     playerCamera->update(Vector2{player->getPlayerDestX()-(player->getPlayerDestWidth()/2), player->getPlayerDestY()-(player->getPlayerDestHeight()/2)});
+
+    // if (frameCounter > 60) {frameCounter = 1;} - Keep for later? Overflow?
 }
 
 /**
@@ -63,7 +68,7 @@ void init() {
 
     grassSprite = LoadTexture("res/Tilesets/Grass.png");
     player = new Player({0, 0, 48, 48}, {200, 200, 100, 100}, 3.0, "res/Characters/Basic_Charakter_Spritesheet.png");
-    playerCamera = new CustomCamera(Vector2{SCREEN_WIDTH/2, SCREEN_HEIGHT/2}, Vector2{player->getPlayerDestX()-(player->getPlayerDestWidth()/2), player->getPlayerDestY()-(player->getPlayerDestHeight()/2)}, 0.0, 1.0);
+    playerCamera = new CustomCamera(Vector2{SCREEN_WIDTH/2, SCREEN_HEIGHT/2}, Vector2{player->getPlayerDestX()-(player->getPlayerDestWidth()/2), player->getPlayerDestY()-(player->getPlayerDestHeight()/2)}, 0.0, 1.5);
 }
 
 /**
@@ -74,6 +79,7 @@ void init() {
 void quit() {
     UnloadTexture(grassSprite);
     delete player;
+    delete playerCamera;
     CloseWindow();
 }
 
@@ -94,3 +100,17 @@ int main(int argc, char const *argv[]) {
     quit();
     return 0;
 }
+
+
+
+/*
+Possibly better animation idea: Shift source down 48 (48x48 grid spritesheet) or x depending on
+Which direction they are going. Easier way?
+
+
+
+
+
+
+
+*/
