@@ -1,18 +1,21 @@
 #include "raylib.h"
 #include "Player/Player.hpp"
 #include "World/CustomCamera.hpp"
+#include "World/TileMapper.hpp"
 
 const int SCREEN_WIDTH = 1000;
 const int SCREEN_HEIGHT = 480;
 bool isRunning = true;
 int frameCounter = 0;
 Color backgroundColor = {147, 211, 196, 255};
-Texture2D grassSprite;
 Player *player;
 CustomCamera *playerCamera;
+TileMapper *grassMap;
 
 void drawScene() {
-    DrawTexture(grassSprite, 100, 50, WHITE);
+    ClearBackground(backgroundColor); 
+
+    grassMap->draw();
     player->draw();
 }
 
@@ -45,8 +48,7 @@ void update() {
  * @details Handles all rendering for game
 */
 void render() {
-    BeginDrawing();
-    ClearBackground(backgroundColor);    
+    BeginDrawing();   
     playerCamera->begin();
 
     drawScene();
@@ -66,7 +68,8 @@ void init() {
     SetExitKey(0);
     SetTargetFPS(60);
 
-    grassSprite = LoadTexture("res/Tilesets/Grass.png");
+    grassMap = new TileMapper({0, 0, 16, 16}, {0, 0, 16, 16}, 5, 5, "res/Tilesets/Grass.png");
+    grassMap->loadMap();
     player = new Player({0, 0, 48, 48}, {200, 200, 100, 100}, 3.0, "res/Characters/Basic_Charakter_Spritesheet.png");
     playerCamera = new CustomCamera(Vector2{SCREEN_WIDTH/2, SCREEN_HEIGHT/2}, Vector2{player->getPlayerDestX()-(player->getPlayerDestWidth()/2), player->getPlayerDestY()-(player->getPlayerDestHeight()/2)}, 0.0, 1.5);
 }
@@ -77,9 +80,9 @@ void init() {
  * @details Deallocates all memory and quits game
 */
 void quit() {
-    UnloadTexture(grassSprite);
     delete player;
     delete playerCamera;
+    delete grassMap;
     CloseWindow();
 }
 

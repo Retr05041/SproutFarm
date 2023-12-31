@@ -13,6 +13,7 @@ set(SOURCES
     src/main.cpp
     src/Player/Player.cpp
     src/World/CustomCamera.cpp
+    src/World/TileMapper.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
